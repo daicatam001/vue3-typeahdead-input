@@ -1,7 +1,7 @@
-import TaAutocomplete from "./components/TaAutocomplete.vue";
+import AutocompleteInput from "./components/AutocompleteInput.vue";
 
 export default {
   install: (app, options) => {
-    app.component("TaAutocomplete", TaAutocomplete);
+    app.component("AutocompleteInput", AutocompleteInput);
   },
 };

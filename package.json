@@ -1,5 +1,5 @@
 {
-  "name": "vue3-autocomlete-input",
+  "name": "vue3-autocomplete-input",
   "version": "0.0.1",
   "main": "./dist/ta-autocomplete.umd.js",
   "module": "./dist/ta-autocomplete.es.js",
@@ -8,7 +8,7 @@
       "import": "./dist/ta-autocomplete.es.js",
       "require": "./dist/ta-autocomplete.umd.js"
     },
-    "./dist/style.css":"./dist/style.css"
+    "./dist/style.css": "./dist/style.css"
   },
   "scripts": {
     "dev": "vite",

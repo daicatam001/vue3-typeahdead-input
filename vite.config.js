@@ -9,8 +9,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.js"),
-      name: "ta-autocomplete",
-      fileName: (format) => `ta-autocomplete.${format}.js`,
+      name: "vue3-autocomplete-input",
+      fileName: (format) => `vue3-autocomplete-input.${format}.js`,
     },
   },
   rollupOptions: {
