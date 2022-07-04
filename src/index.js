@@ -1,3 +1,3 @@
-import AutocompleteInput from "./components/AutocompleteInput.vue";
+import TypeaheadInput from "./components/TypeaheadInput.vue";
 
-export default AutocompleteInput;
+export default TypeaheadInput;

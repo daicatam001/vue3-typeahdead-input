@@ -1,29 +1,47 @@
-# autocomlete-input
+# vue3-typeahead-input
 
-This template should help get you started developing with Vue 3 in Vite.
+A simple Vue 3 type-ahead input component that shows a list of suggested items based on the user input
 
-## Recommended IDE Setup
+## Table of contents
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+  - [Installation](#installation)
+  - [Usage](#usage)
 
-## Customize configuration
+## Installation
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+Using npm
+```
+npm install vue3-typeahead-input
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
+Using yarn
+```
+yarn add vue3-typeahead-input
 ```
 
-### Compile and Minify for Production
+## Usage
+Import vue3-typeahead-input component globally. You can import default CSS of the component if you want.
 
-```sh
-npm run build
+```ts
+import App from './App.vue';
+import TypeaheadInput from 'vue3-typeahead-input';
+import 'vue-typeahead-input/dist/style.css'; //Optional default CSS
+
+let app = createApp(App)
+app.component('TypeaheadInput', TypeaheadInput)
+app.mount('#app')
+```
+
+...Or import vue3-typeahead-input component locally in component you want. 
+
+```ts
+import TypeaheadInput from 'vue3-typeahead-input'
+import 'vue-typeahead-input/dist/style.css'; //Optional default CSS
+
+export default {
+    name: 'YourComponentName',
+    components: {
+        TypeaheadInput
+    }
+}
 ```
