@@ -1,6 +1,5 @@
 <script setup>
-import { computed } from "vue";
-import { onMounted, ref, toRefs, watch } from "vue";
+import { onMounted, ref, toRefs, watch, computed } from "vue";
 const props = defineProps({
     label: String,
     items: {
@@ -210,42 +209,26 @@ watch(
 );
 </script>
 <template>
-    <div class="ta-autocomplete"
-        :class="{ 'ta-is-focused': isFocused, 'ta-has-label': !!label }"
+    <div class="ta-autocomplete" :class="{ 'ta-is-focused': isFocused, 'ta-has-label': !!label }"
         @mousedown.prevent="onClick">
-        <label v-if="label"
-            class="ta-autocomplete-label">{{ label }}</label>
-        <input ref="input"
-            type="text"
-            @blur="onBlur"
-            @input="filterItems"
-            @keydown.esc.prevent="isPanelActived = false"
-            @keydown.enter.stop="onSelectItem($event)"
-            @keydown.up.prevent="onJumpItemUp"
-            @keydown.down.prevent="onJumpItemDown"
-            class="ta-autocomplete-input" />
+        <label v-if="label" class="ta-autocomplete-label">{{ label }}</label>
+        <input ref="input" type="text" @blur="onBlur" @input="filterItems" @keydown.esc.prevent="isPanelActived = false"
+            @keydown.enter.stop="onSelectItem($event)" @keydown.up.prevent="onJumpItemUp"
+            @keydown.down.prevent="onJumpItemDown" class="ta-autocomplete-input" />
         <div class="ta-autocomplete-arrow"></div>
-        <div class="ta-autocomplete-panel-place"
-            ref="panelPlace"></div>
-        <div ref="panelHolder"
-            v-show="isPanelActived"
-            class="ta-autocomplete-panel-holder">
-            <div ref="panel"
-                class="ta-autocomplete-panel">
-                <div role="button"
-                    v-for="item of panelItems"
-                    :key="item[itemValue]"
-                    class="ta-autocomplete-item"
-                    :id="`${name}-${item[itemValue]}`"
-                    @mousedown.stop="onSelectItem($event, item[itemValue])"
-                    :class="{ 'ta-autocomplete-item-jumped': jumpedItem == item[itemValue] }"> {{ item[itemText] }} </div>
+        <div class="ta-autocomplete-panel-place" ref="panelPlace"></div>
+        <div ref="panelHolder" v-show="isPanelActived" class="ta-autocomplete-panel-holder">
+            <div ref="panel" class="ta-autocomplete-panel">
+                <div role="button" v-for="item of panelItems" :key="item[itemValue]" class="ta-autocomplete-item"
+                    :id="`${name}-${item[itemValue]}`" @mousedown.stop="onSelectItem($event, item[itemValue])"
+                    :class="{ 'ta-autocomplete-item-jumped': jumpedItem == item[itemValue] }"> {{ item[itemText] }}
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <style lang="scss">
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -305,9 +288,10 @@ watch(
     }
 
     &-item {
-        @apply py-1 hover:bg-gray-100  px-3;
+        @apply py-1 hover:bg-gray-100 px-3;
     }
-    &-item-jumped{
+
+    &-item-jumped {
         @apply bg-gray-100
     }
 }
