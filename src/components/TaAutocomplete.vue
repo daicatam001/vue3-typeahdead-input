@@ -245,6 +245,11 @@ watch(
 </template>
 
 <style lang="scss">
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .ta-autocomplete {
     @apply h-10 bg-white border border-gray-300 relative rounded;
 
