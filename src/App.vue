@@ -75,7 +75,9 @@ const data = [
 </script>
 
 <template>
-
-  <TAutocomplete :items="data" :value="5" />
+  <div class="p-4">
+     <TAutocomplete label="hello" :items="data" :value="5" />
+  </div>
+ 
 </template>
 
