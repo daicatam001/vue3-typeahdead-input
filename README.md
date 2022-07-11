@@ -85,6 +85,7 @@ Use component in template
 | item-text | string | Set property of items’s text value | text |
 | item-value | string | Set property of items’s value | value |
 | label | string | Label of typeahead input | undefined |
+| value | any | Value of typeahead input | undefined |
 | emptyMessage| string | Display message when there is no data | No data available |
 
 ## Events
