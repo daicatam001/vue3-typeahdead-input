@@ -209,19 +209,19 @@ watch(
 );
 </script>
 <template>
-    <div class="ta-autocomplete" :class="{ 'ta-is-focused': isFocused, 'ta-has-label': !!label }"
+    <div class="ta-input" :class="{ 'ta-is-focused': isFocused, 'ta-has-label': !!label }"
         @mousedown.prevent="onClick">
-        <label v-if="label" class="ta-autocomplete-label">{{ label }}</label>
+        <label v-if="label" class="ta-input-label">{{ label }}</label>
         <input ref="input" type="text" @blur="onBlur" @input="filterItems" @keydown.esc.prevent="isPanelActived = false"
             @keydown.enter.stop="onSelectItem($event)" @keydown.up.prevent="onJumpItemUp"
-            @keydown.down.prevent="onJumpItemDown" class="ta-autocomplete-input" />
-        <div class="ta-autocomplete-arrow"></div>
-        <div class="ta-autocomplete-panel-place" ref="panelPlace"></div>
-        <div ref="panelHolder" v-show="isPanelActived" class="ta-autocomplete-panel-holder">
-            <div ref="panel" class="ta-autocomplete-panel">
-                <div role="button" v-for="item of panelItems" :key="item[itemValue]" class="ta-autocomplete-item"
+            @keydown.down.prevent="onJumpItemDown" class="ta-input-input" />
+        <div class="ta-input-arrow"></div>
+        <div class="ta-input-panel-place" ref="panelPlace"></div>
+        <div ref="panelHolder" v-show="isPanelActived" class="ta-input-panel-holder">
+            <div ref="panel" class="ta-input-panel">
+                <div role="button" v-for="item of panelItems" :key="item[itemValue]" class="ta-input-item"
                     :id="`${name}-${item[itemValue]}`" @mousedown.stop="onSelectItem($event, item[itemValue])"
-                    :class="{ 'ta-autocomplete-item-jumped': jumpedItem == item[itemValue] }"> {{ item[itemText] }}
+                    :class="{ 'ta-input-item-jumped': jumpedItem == item[itemValue] }"> {{ item[itemText] }}
                 </div>
             </div>
         </div>
@@ -233,7 +233,7 @@ watch(
 @tailwind components;
 @tailwind utilities;
 
-.ta-autocomplete {
+.ta-input {
     @apply h-10 bg-white border border-gray-300 relative rounded;
 
     &.ta-has-label {
@@ -243,7 +243,7 @@ watch(
     &.ta-is-focused {
         @apply border-indigo-500;
 
-        .ta-autocomplete-label {
+        .ta-input-label {
             @apply text-indigo-500;
         }
     }

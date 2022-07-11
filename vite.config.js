@@ -8,8 +8,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.js"),
-      name: "vue3-autocomplete-input",
-      fileName: (format) => `vue3-autocomplete-input.${format}.js`,
+      name: "vue3-typeahead-input",
+      fileName: (format) => `vue3-typeahead-input.${format}.js`,
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
