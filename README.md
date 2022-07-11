@@ -36,9 +36,15 @@ Use component in template
 
 ## Properties
 
-
 | Property  | Type | Description | Default |
 |---|---|---|---|
 | items | Array | An array of objects. It will look for a text and value keys. This can be changed using the item-text, item-value | [] |
 | item-text | string | Set property of items’s text value | text |
 | item-value | string | Set property of items’s value | value |
+
+## Events
+
+| Name | Description |
+| ---- | ----------- |
+| @input | The updated bound model |
+| @change | Emitted when the input is changed by user interaction |
