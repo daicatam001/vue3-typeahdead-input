@@ -1,29 +1,44 @@
-# autocomlete-input
+Use component in template
+```html
+<template>
+    <div>
+        <TypeaheadInput
+            :items="items"
+            @change="onChange"
+            >
+        </TypeaheadInput>    
+    </div>
+</template>
 
-This template should help get you started developing with Vue 3 in Vite.
+```
+```html
+<script setup>
+    const items = [
+        {
+            text:'Item 1',
+            value: 'item-1'
+        },
+        {
+            text:'Item 2',
+            value: 'item-2'
+        },
+        {
+            text:'Item 3',
+            value: 'item-3'
+        },
+    ]
+    const onChange = (value)=>{
+        console.log(value)
+    }
+</script>
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
 ```
 
-### Compile and Hot-Reload for Development
+## Properties
 
-```sh
-npm run dev
-```
 
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+| Property  | Type | Description | Default |
+|---|---|---|---|
+| items | Array | An array of objects. It will look for a text and value keys. This can be changed using the item-text, item-value | [] |
+| item-text | string | Set property of items’s text value | text |
+| item-value | string | Set property of items’s value | value |

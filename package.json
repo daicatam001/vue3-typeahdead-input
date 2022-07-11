@@ -28,5 +28,23 @@
     "sass": "^1.53.0",
     "tailwindcss": "^3.1.4",
     "vite": "^2.9.12"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daicatam001/vue3-typeahdead-input.git"
+  },
+  "homepage": "",
+  "keywords": [
+    "vue",
+    "vuejs",
+    "vue3",
+    "autocomplete",
+    "typeahdead",
+    "select",
+    "search",
+    "input"
+  ],
+  "bugs": {
+    "url": "https://github.com/daicatam001/vue3-typeahdead-input/issues"
+  },
 }
