@@ -33,20 +33,26 @@ const isFocused = ref(false);
 const isPanelActived = ref(false);
 const query = ref(null);
 
+const mapItemField = (item, key) => typeof item === 'object' ? item[key] : item
+
+const mappedItems = computed(() => items.value.map(item => ({
+    text: mapItemField(item, itemText.value),
+    value: mapItemField(item, itemValue.value)
+})))
 
 const panelItems = computed(() =>
     query.value
-        ? items.value.filter((item) =>
-            item[itemText.value].toLowerCase().includes(query.value.toLowerCase())
+        ? mappedItems.value.filter((item) =>
+            item.text.toLowerCase().includes(query.value.toLowerCase())
         )
-        : items.value
+        : mappedItems.value
 );
 
 const itemIndexEntry = computed(() =>
     panelItems.value.reduce(
         (entry, item, index) => ({
             ...entry,
-            [item[itemValue.value]]: index,
+            [item.value]: index,
         }),
         {}
     )
@@ -106,10 +112,10 @@ const reset = () => {
 
 const updateInputText = () => {
     if (input.value && internalValue.value) {
-        const selectedItem = items.value.find(
-            (item) => item[itemValue.value] === internalValue.value
+        const selectedItem = mappedItems.value.find(
+            (item) => item.value === internalValue.value
         );
-        input.value.value = selectedItem[itemText.value];
+        input.value.value = selectedItem.text;
     }
 };
 
@@ -126,7 +132,7 @@ const onJumpItemDown = () => {
     ) {
         nextIndex = itemIndexEntry.value[jumpedItem.value] + 1;
     }
-    jumpedItem.value = panelItems.value[nextIndex][itemValue.value];
+    jumpedItem.value = panelItems.value[nextIndex].value;
     scrollElement();
 };
 
@@ -143,7 +149,7 @@ const onJumpItemUp = () => {
     ) {
         nextIndex = itemIndexEntry.value[jumpedItem.value] - 1;
     }
-    jumpedItem.value = panelItems.value[nextIndex][itemValue.value];
+    jumpedItem.value = panelItems.value[nextIndex].value;
     scrollElement();
 };
 
@@ -239,11 +245,11 @@ watch(
                 class="ta-input-panel">
                 <div role="button"
                     v-for="item of panelItems"
-                    :key="item[itemValue]"
+                    :key="item.value"
                     class="ta-input-item"
-                    :id="`${name}-${item[itemValue]}`"
-                    @mousedown.stop="onSelectItem($event, item[itemValue])"
-                    :class="{ 'ta-input-item-jumped': jumpedItem == item[itemValue] }"> {{ item[itemText] }} </div>
+                    :id="`${name}-${item.value}`"
+                    @mousedown.stop="onSelectItem($event, item.value)"
+                    :class="{ 'ta-input-item-jumped': jumpedItem == item.value }"> {{ item.text }} </div>
             </div>
             <div v-else
                 class="ta-input-empty-message">{{ emptyMessage }}</div>
@@ -276,7 +282,7 @@ watch(
     }
 
     &-input {
-        @apply absolute bottom-2 left-4 w-[calc(100%-3rem)] outline-none
+        @apply absolute bottom-1 left-4 w-[calc(100%-3rem)] outline-none
     }
 
     &-arrow {
@@ -311,11 +317,11 @@ watch(
     }
 
     &-item {
-        @apply py-1 hover:bg-gray-200 px-3;
+        @apply py-1 hover:bg-gray-100 px-3;
     }
 
     &-item-jumped {
-        @apply bg-gray-200
+        @apply bg-gray-100
     }
 
     &-empty-message {

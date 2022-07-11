@@ -1,6 +1,7 @@
 <template>
     <div style="padding:2rem">
-        <TypeaheadInput label="Name" :items="items">
+        <TypeaheadInput label="Name"
+            :items="items">
         </TypeaheadInput>
     </div>
 </template>
@@ -8,6 +9,6 @@
 import TypeaheadInput from '../components/TypeaheadInput.vue';
 
 const items = [
-    { text: 'text-1', value: 'value-1' }
+    1, 2, 3, 4
 ]
 </script>
