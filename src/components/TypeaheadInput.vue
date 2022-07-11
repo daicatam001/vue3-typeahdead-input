@@ -15,10 +15,14 @@ const props = defineProps({
         default: "value",
     },
     name: String,
+    emptyMessage: {
+        type: String,
+        default: "No data available"
+    }
 });
 
-const emit = defineEmits(["change"]);
-const { items, value, itemText, itemValue, name } = toRefs(props);
+const emit = defineEmits(["change", "input"]);
+const { items, value, itemText, itemValue, name, emptyMessage } = toRefs(props);
 const input = ref(null);
 const panel = ref(null);
 const panelPlace = ref(null);
@@ -28,6 +32,7 @@ const internalValue = ref(undefined);
 const isFocused = ref(false);
 const isPanelActived = ref(false);
 const query = ref(null);
+
 
 const panelItems = computed(() =>
     query.value
@@ -81,6 +86,7 @@ const onSelectItem = (event, value) => {
     emit("input", internalValue.value);
 };
 
+
 const onBlur = () => {
     isFocused.value = false;
     reset();
@@ -95,7 +101,6 @@ const onClick = () => {
 const reset = () => {
     query.value = null;
     isPanelActived.value = false;
-    console.log(isPanelActived.value);
     updateInputText();
 };
 
@@ -143,7 +148,7 @@ const onJumpItemUp = () => {
 };
 
 const scrollElement = () => {
-    const jumpedElement = document.getElementById(
+    const jumpedElement = panelHolder.value.getElementById(
         `${name.value}-${jumpedItem.value}`
     );
     const { offsetHeight: panelOffsetHeight, scrollTop: panelScrollTop } =
@@ -209,21 +214,39 @@ watch(
 );
 </script>
 <template>
-    <div class="ta-input" :class="{ 'ta-is-focused': isFocused, 'ta-has-label': !!label }"
+    <div class="ta-input"
+        :class="{ 'ta-is-focused': isFocused, 'ta-has-label': !!label }"
         @mousedown.prevent="onClick">
-        <label v-if="label" class="ta-input-label">{{ label }}</label>
-        <input ref="input" type="text" @blur="onBlur" @input="filterItems" @keydown.esc.prevent="isPanelActived = false"
-            @keydown.enter.stop="onSelectItem($event)" @keydown.up.prevent="onJumpItemUp"
-            @keydown.down.prevent="onJumpItemDown" class="ta-input-input" />
+        <label v-if="label"
+            class="ta-input-label">{{ label }}</label>
+        <input ref="input"
+            type="text"
+            @blur="onBlur"
+            @input="filterItems"
+            @keydown.esc.prevent="isPanelActived = false"
+            @keydown.enter.stop="onSelectItem($event)"
+            @keydown.up.prevent="onJumpItemUp"
+            @keydown.down.prevent="onJumpItemDown"
+            class="ta-input-input" />
         <div class="ta-input-arrow"></div>
-        <div class="ta-input-panel-place" ref="panelPlace"></div>
-        <div ref="panelHolder" v-show="isPanelActived" class="ta-input-panel-holder">
-            <div ref="panel" class="ta-input-panel">
-                <div role="button" v-for="item of panelItems" :key="item[itemValue]" class="ta-input-item"
-                    :id="`${name}-${item[itemValue]}`" @mousedown.stop="onSelectItem($event, item[itemValue])"
-                    :class="{ 'ta-input-item-jumped': jumpedItem == item[itemValue] }"> {{ item[itemText] }}
-                </div>
+        <div class="ta-input-panel-place"
+            ref="panelPlace"></div>
+        <div ref="panelHolder"
+            v-show="isPanelActived"
+            class="ta-input-panel-holder">
+            <div ref="panel"
+                v-if="panelItems.length"
+                class="ta-input-panel">
+                <div role="button"
+                    v-for="item of panelItems"
+                    :key="item[itemValue]"
+                    class="ta-input-item"
+                    :id="`${name}-${item[itemValue]}`"
+                    @mousedown.stop="onSelectItem($event, item[itemValue])"
+                    :class="{ 'ta-input-item-jumped': jumpedItem == item[itemValue] }"> {{ item[itemText] }} </div>
             </div>
+            <div v-else
+                class="ta-input-empty-message">{{ emptyMessage }}</div>
         </div>
     </div>
 </template>
@@ -237,7 +260,7 @@ watch(
     @apply h-10 bg-white border border-gray-300 relative rounded;
 
     &.ta-has-label {
-        @apply h-16;
+        @apply h-14;
     }
 
     &.ta-is-focused {
@@ -249,7 +272,7 @@ watch(
     }
 
     &-label {
-        @apply select-none absolute top-2 left-4 text-gray-500 text-sm;
+        @apply select-none absolute top-1 left-4 text-gray-500 text-sm;
     }
 
     &-input {
@@ -283,16 +306,20 @@ watch(
 
         /* Handle */
         &::-webkit-scrollbar-thumb {
-            @apply bg-gray-300 rounded;
+            @apply bg-gray-400 rounded;
         }
     }
 
     &-item {
-        @apply py-1 hover:bg-gray-100 px-3;
+        @apply py-1 hover:bg-gray-200 px-3;
     }
 
     &-item-jumped {
-        @apply bg-gray-100
+        @apply bg-gray-200
+    }
+
+    &-empty-message {
+        @apply px-3;
     }
 }
 </style>

@@ -1,6 +1,6 @@
 {
   "name": "vue3-typeahead-input",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "files": [
     "dist"
   ],
@@ -15,7 +15,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build-lib": "vite --config vite.config.lib.js build",
     "preview": "vite preview --port 4173"
   },
   "dependencies": {
@@ -46,5 +46,5 @@
   ],
   "bugs": {
     "url": "https://github.com/daicatam001/vue3-typeahdead-input/issues"
-  },
+  }
 }
