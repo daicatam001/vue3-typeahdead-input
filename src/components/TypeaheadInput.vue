@@ -1,7 +1,9 @@
 <script setup>
-import { onMounted, ref, toRefs, watch, computed } from "vue";
+import { onMounted, ref, toRefs, watch, computed, onUpdated } from "vue";
 const props = defineProps({
     label: String,
+    value: String | Number | Object,
+    modelValue: String | Number | Object,
     items: {
         type: Array,
         default: () => [],
@@ -21,8 +23,8 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(["change", "input"]);
-const { items, value, itemText, itemValue, name, emptyMessage } = toRefs(props);
+const emit = defineEmits(["change"]);
+const { items, value, modelValue, itemText, itemValue, name, emptyMessage } = toRefs(props);
 const input = ref(null);
 const panel = ref(null);
 const panelPlace = ref(null);
@@ -63,11 +65,19 @@ onMounted(() => {
     calPanelPosition();
 });
 
+onUpdated(() => {
+    calPanelPosition();
+})
+
 const calPanelPosition = () => {
-    const rect = panelPlace.value.getBoundingClientRect();
-    panelHolder.value.style.left = rect.x + "px";
-    panelHolder.value.style.top = rect.y + "px";
-    panelHolder.value.style.width = panelPlace.value.offsetWidth + "px";
+    const rectPlace = panelPlace.value.getBoundingClientRect();
+    const rectHolder = panelHolder.value.getBoundingClientRect()
+    if (rectPlace.x !== rectHolder.x || rectPlace.y !== rectHolder.y) {
+        panelHolder.value.style.left = rectPlace.x + "px";
+        panelHolder.value.style.top = rectPlace.y + "px";
+        panelHolder.value.style.width = panelPlace.value.offsetWidth + "px";
+    }
+
 };
 
 const filterItems = (event) => {
@@ -89,7 +99,7 @@ const onSelectItem = (event, value) => {
     reset();
     input.value.focus();
     emit("change", internalValue.value);
-    emit("input", internalValue.value);
+    emit("update:modelValue", internalValue.value);
 };
 
 
@@ -186,15 +196,24 @@ const scrollElement = () => {
     }
 };
 
+const updateInteralValue = (value) => {
+    if (value !== internalValue.value) {
+        internalValue.value = value;
+    }
+}
+
 watch(
     value,
-    (value) => {
-        if (value !== internalValue.value) {
-            internalValue.value = value;
-        }
-    },
+    updateInteralValue,
     { immediate: true }
 );
+
+watch(
+    modelValue,
+    updateInteralValue,
+    { immediate: true }
+);
+
 watch(internalValue, () => {
     updateInputText();
 });
@@ -204,6 +223,7 @@ watch(query, (query) => {
         internalValue.value = null;
         jumpedItem.value = null;
         emit("change", null);
+        emit("update:modelValue")
     }
 });
 

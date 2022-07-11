@@ -52,14 +52,11 @@ Use component in template
     <div>
         <TypeaheadInput
             :items="items"
-            @change="onChange"
-            >
+            v-model="selectedItem">
         </TypeaheadInput>    
     </div>
 </template>
 
-```
-```html
 <script setup>
     const items = [
         {
@@ -75,9 +72,7 @@ Use component in template
             value: 'item-3'
         },
     ]
-    const onChange = (value)=>{
-        console.log(value)
-    }
+    const selectedItem = ref('item-3')
 </script>
 
 ```
@@ -96,5 +91,6 @@ Use component in template
 
 | Name | Description |
 | ---- | ----------- |
-| @input | The updated bound model |
 | @change | Emitted when the input is changed by user interaction |
+| @update:modelValue | The updated bound model |
+
