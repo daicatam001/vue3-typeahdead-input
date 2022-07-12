@@ -83,7 +83,7 @@ Use component in template
 |---|---|---|---|
 | items | Array | An array of objects or array of primary types like string or number. It will look for a text and value keys. This can be changed using the item-text, item-value | [] |
 | item-text | string | Set property of items’s text value | text |
-| item-value | string | Set property of items’s value | value |
+| item-value | string | Set property of items’s value. In case `skip-item-value` is `true` the value will be used to set option item key | value |
 | skip-item-value | boolean | Get whole object item as a value |
 | label | string | Label of typeahead input | undefined |
 | placeholder | string | Placeholder of typeahead input | undefined |
