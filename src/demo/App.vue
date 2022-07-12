@@ -1,8 +1,11 @@
 <template>
     <div style="padding:2rem">
-        <TypeaheadInput label="Name"
+        <TypeaheadInput 
+            label="name"
+            placeholder="this is place holder"
             v-model="selectedItem"
             :items="items">
+            <template #option-item>aaaa</template>
         </TypeaheadInput>
     </div>
 </template>

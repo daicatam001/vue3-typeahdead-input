@@ -1,7 +1,8 @@
 <script setup>
-import { onMounted, ref, toRefs, watch, computed, onUpdated } from "vue";
+import { onMounted, ref, toRefs, watch, computed, onUpdated, useSlots } from "vue";
 const props = defineProps({
     label: String,
+    placeholder: String,
     value: String | Number | Object,
     modelValue: String | Number | Object,
     items: {
@@ -24,7 +25,9 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["change"]);
-const { items, value, modelValue, itemText, itemValue, name, emptyMessage } = toRefs(props);
+const { label, placeholder, items, value, modelValue, itemText, itemValue, name, emptyMessage } = toRefs(props);
+const slots = useSlots()
+
 const input = ref(null);
 const panel = ref(null);
 const panelPlace = ref(null);
@@ -247,6 +250,7 @@ watch(
             class="ta-input-label">{{ label }}</label>
         <input ref="input"
             type="text"
+            :placeholder="placeholder"
             @blur="onBlur"
             @input="filterItems"
             @keydown.esc.prevent="isPanelActived = false"
@@ -269,7 +273,13 @@ watch(
                     class="ta-input-item"
                     :id="`${name}-${item.value}`"
                     @mousedown.stop="onSelectItem($event, item.value)"
-                    :class="{ 'ta-input-item-jumped': jumpedItem == item.value }"> {{ item.text }} </div>
+                    :class="{ 'ta-input-item-jumped': jumpedItem == item.value }">
+                    <slot v-if="slots['option-item']"
+                        name="option-item"
+                        :value="item.value"
+                        :item="item"></slot>
+                    <template v-else> {{ item.text }} </template>
+                </div>
             </div>
             <div v-else
                 class="ta-input-empty-message">{{ emptyMessage }}</div>
@@ -286,7 +296,11 @@ watch(
     @apply h-10 bg-white border border-gray-300 relative rounded;
 
     &.ta-has-label {
-        @apply h-14;
+        @apply h-[3.25rem];
+
+        .ta-input-input{
+            @apply bottom-1 translate-y-0;
+        }
     }
 
     &.ta-is-focused {
@@ -302,7 +316,7 @@ watch(
     }
 
     &-input {
-        @apply absolute bottom-1 left-4 w-[calc(100%-3rem)] outline-none
+        @apply absolute bottom-1/2 translate-y-1/2 left-4 w-[calc(100%-3rem)] outline-none
     }
 
     &-arrow {
