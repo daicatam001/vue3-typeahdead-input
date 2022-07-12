@@ -48,5 +48,5 @@ const items = [
     { id: "XO0VoGPVJ1", name: "Zimbabwe", iso2: "ZW" },
     { id: "OXKwRMVJDR", name: "land Islands", iso2: "AX" },
 ];
-const model = ref(null)
+const model = ref()
 </script>

@@ -38,6 +38,7 @@ const panel = ref(null);
 const panelPlace = ref(null);
 const panelHolder = ref(null);
 const jumpedItem = ref(null);
+const optionItems = ref([])
 const internalValue = ref(undefined);
 const isFocused = ref(false);
 const isPanelActived = ref(false);
@@ -48,7 +49,7 @@ const mapItemField = (item, key) => typeof item === 'object' ? item[key] : item
 
 const mappedItems = computed(() => items.value.map(item => ({
     text: mapItemField(item, itemText.value),
-    value: skipItemValue.value ? item : mapItemField(item, itemValue.value),
+    value: mapItemField(item, itemValue.value),
     item
 })))
 
@@ -64,7 +65,10 @@ const itemIndexEntry = computed(() =>
     panelItems.value.reduce(
         (entry, item, index) => ({
             ...entry,
-            [item.value]: index,
+            [item.value]: {
+                index,
+                ...item
+            },
         }),
         {}
     )
@@ -117,7 +121,7 @@ const onSelectItem = (event, value) => {
     reset();
     input.value.focus();
     emit("change", internalValue.value);
-    emit("update:modelValue", internalValue.value);
+    emit("update:modelValue", skipItemValue.value ? itemIndexEntry.value[internalValue.value].item : internalValue.value);
 };
 
 
@@ -142,13 +146,7 @@ const updateInputText = () => {
     if (!input.value) {
         return
     }
-    if (skipItemValue.value && internalValue.value) {
-        input.value.value = internalValue.value[itemText.value]
-        return
-    }
-    const selectedItem = mappedItems.value.find(
-        (item) => item.value === internalValue.value
-    );
+    const selectedItem = itemIndexEntry.value[internalValue.value]
     input.value.value = selectedItem ? selectedItem.text : '';
 };
 
@@ -160,10 +158,10 @@ const onJumpItemDown = () => {
     let nextIndex = 0;
     if (
         jumpedItem.value &&
-        itemIndexEntry.value[jumpedItem.value] !== undefined &&
-        itemIndexEntry.value[jumpedItem.value] !== panelItems.value.length - 1
+        itemIndexEntry.value[jumpedItem.value].index !== undefined &&
+        itemIndexEntry.value[jumpedItem.value].index !== panelItems.value.length - 1
     ) {
-        nextIndex = itemIndexEntry.value[jumpedItem.value] + 1;
+        nextIndex = itemIndexEntry.value[jumpedItem.value].index + 1;
     }
     jumpedItem.value = panelItems.value[nextIndex].value;
     scrollElement();
@@ -177,19 +175,17 @@ const onJumpItemUp = () => {
     let nextIndex = panelItems.value.length - 1;
     if (
         jumpedItem.value &&
-        itemIndexEntry.value[jumpedItem.value] !== undefined &&
-        itemIndexEntry.value[jumpedItem.value] !== 0
+        itemIndexEntry.value[jumpedItem.value].index !== undefined &&
+        itemIndexEntry.value[jumpedItem.value].index !== 0
     ) {
-        nextIndex = itemIndexEntry.value[jumpedItem.value] - 1;
+        nextIndex = itemIndexEntry.value[jumpedItem.value].index - 1;
     }
     jumpedItem.value = panelItems.value[nextIndex].value;
     scrollElement();
 };
 
 const scrollElement = () => {
-    const jumpedElement = panelHolder.value.getElementById(
-        `${name.value}-${jumpedItem.value}`
-    );
+    const jumpedElement = optionItems.value[itemIndexEntry.value[jumpedItem.value].index]
     const { offsetHeight: panelOffsetHeight, scrollTop: panelScrollTop } =
         panel.value;
     const { offsetHeight: itemOffsetHeight, offsetTop: itemOffsetTop } =
@@ -220,9 +216,14 @@ const scrollElement = () => {
 };
 
 const updateInteralValue = (value) => {
-    if (value !== internalValue.value) {
+    if (skipItemValue.value) {
+        if (typeof value === 'object' && value && value[itemValue.value] !== internalValue.value) {
+            internalValue.value = value[itemValue.value];
+        }
+    } else if (value !== internalValue.value) {
         internalValue.value = value;
     }
+
 }
 
 watch(
@@ -289,10 +290,10 @@ watch(
                 v-if="panelItems.length"
                 class="ta-input-panel">
                 <div role="button"
-                    v-for="item of panelItems"
+                    v-for="(item, index) of panelItems"
                     :key="item.value"
                     class="ta-input-item"
-                    :id="`${name}-${item.value}`"
+                    :ref="(el) => (optionItems[index] = el)"
                     @mousedown.stop="onSelectItem($event, item.value)"
                     :class="{ 'ta-input-item-jumped': jumpedItem == item.value }">
                     <slot v-if="slots['option-item']"
