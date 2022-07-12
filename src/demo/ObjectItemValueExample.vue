@@ -1,17 +1,17 @@
 <template>
     <div class="example">
-        <h3>Using a array of Objects</h3>
+        <h3>Get whole object item as value</h3>
         <div class="row">
             <div class="col-cmp">
                 <TypeaheadInput v-model="model"
                     :items="items"
                     itemText="name"
                     itemValue="id"
-                     placeholder="Choose a country"
-                    ></TypeaheadInput>
+                    placeholder="Choose a country"
+                    :skipItemValue="true"></TypeaheadInput>
             </div>
             <div class="col-data">
-                <pre><code>{{model}}</code></pre>
+                <pre><code>{{ model }}</code></pre>
             </div>
         </div>
     </div>
@@ -47,6 +47,6 @@ const items = [
     { id: "NOkZKO0Z0y", name: "Zambia", iso2: "ZM" },
     { id: "XO0VoGPVJ1", name: "Zimbabwe", iso2: "ZW" },
     { id: "OXKwRMVJDR", name: "land Islands", iso2: "AX" },
-  ];
-const model = ref('JE0VrzVq31')
+];
+const model = ref(null)
 </script>

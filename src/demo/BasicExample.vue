@@ -3,11 +3,14 @@
         <h3>Using a strings array</h3>
         <div class="row">
             <div class="col-cmp">
-                <TypeaheadInput v-model="model"
+                <TypeaheadInput 
+                    v-model="model"
+                    label="Country"
+                    placeholder="Choose a country"
                     :items="items"></TypeaheadInput>
             </div>
             <div class="col-data">
-                <pre><code>{{model}}</code></pre>
+                <pre><code>{{ model }}</code></pre>
             </div>
         </div>
     </div>

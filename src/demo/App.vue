@@ -3,12 +3,14 @@
         <BasicExample></BasicExample>
         <ObjectItemsExample></ObjectItemsExample>
         <CustomOptionSlotExample></CustomOptionSlotExample>
+        <ObjectItemValueExample></ObjectItemValueExample>
     </div>
 </template>
 <script setup>
 import BasicExample from './BasicExample.vue';
 import ObjectItemsExample from './ObjectItemsExample.vue';
 import CustomOptionSlotExample from './CustomOptionSlotExample.vue';
+import ObjectItemValueExample from './ObjectItemValueExample.vue';
 </script>
 <style>
 .container {

@@ -18,6 +18,10 @@ const props = defineProps({
         type: String,
         default: "value",
     },
+    skipItemValue: {
+        type: Boolean,
+        default: false
+    },
     name: String,
     emptyMessage: {
         type: String,
@@ -26,7 +30,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["change", "update:modelValue"]);
-const { label, placeholder, maxLength, items, value, modelValue, itemText, itemValue, name, emptyMessage } = toRefs(props);
+const { label, placeholder, maxLength, items, value, modelValue, itemText, itemValue, skipItemValue, name, emptyMessage } = toRefs(props);
 const slots = useSlots()
 
 const input = ref(null);
@@ -41,9 +45,10 @@ const query = ref(null);
 
 const mapItemField = (item, key) => typeof item === 'object' ? item[key] : item
 
+
 const mappedItems = computed(() => items.value.map(item => ({
     text: mapItemField(item, itemText.value),
-    value: mapItemField(item, itemValue.value),
+    value: skipItemValue.value ? item : mapItemField(item, itemValue.value),
     item
 })))
 
@@ -75,8 +80,16 @@ onUpdated(() => {
 })
 
 const calPanelPosition = () => {
-    const rectPlace = panelPlace.value.getBoundingClientRect();
+    panelPlace.value.style = null;
+    let rectPlace;
+    rectPlace = panelPlace.value.getBoundingClientRect();
     const rectHolder = panelHolder.value.getBoundingClientRect()
+    // check if panel show in view point
+    if (rectPlace.bottom + panelHolder.value.offsetHeight > (window.innerHeight || document.documentElement.clientHeight)) {
+        panelPlace.value.style.top = -(panelHolder.value.offsetHeight + 10) + 'px';
+        rectPlace = panelPlace.value.getBoundingClientRect();
+    }
+
     if (rectPlace.x !== rectHolder.x || rectPlace.y !== rectHolder.y) {
         panelHolder.value.style.left = rectPlace.x + "px";
         panelHolder.value.style.top = rectPlace.y + "px";
@@ -127,6 +140,10 @@ const reset = () => {
 
 const updateInputText = () => {
     if (!input.value) {
+        return
+    }
+    if (skipItemValue.value && internalValue.value) {
+        input.value.value = internalValue.value[itemText.value]
         return
     }
     const selectedItem = mappedItems.value.find(
@@ -320,7 +337,7 @@ watch(
         position: absolute;
         top: 0.25rem;
         left: 1rem;
-        color: #6b7280;
+        color: #333333;
         font-size: 0.875rem;
         line-height: 1.25rem
     }
@@ -393,6 +410,7 @@ watch(
     &-item {
         padding: 0.25rem 0.75rem;
         font-size: 1rem;
+
         &:hover {
             background-color: #f3f4f6;
         }
