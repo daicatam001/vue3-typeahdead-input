@@ -1,30 +1,47 @@
 <template>
-    <div style="padding:2rem">
-        <TypeaheadInput 
-            label="name"
-            placeholder="this is place holder"
-            v-model="selectedItem"
-            :items="items">
-            <template #option-item>aaaa</template>
-        </TypeaheadInput>
+    <div class="container">
+        <BasicExample></BasicExample>
+        <ObjectItemsExample></ObjectItemsExample>
+        <CustomOptionSlotExample></CustomOptionSlotExample>
     </div>
 </template>
 <script setup>
-import { ref } from 'vue';
-import TypeaheadInput from '../components/TypeaheadInput.vue';
-    const items = [
-        {
-            text:'Item 1',
-            value: 'item-1'
-        },
-        {
-            text:'Item 2',
-            value: 'item-2'
-        },
-        {
-            text:'Item 3',
-            value: 'item-3'
-        },
-    ]
-    const selectedItem = ref('item-3')
+import BasicExample from './BasicExample.vue';
+import ObjectItemsExample from './ObjectItemsExample.vue';
+import CustomOptionSlotExample from './CustomOptionSlotExample.vue';
 </script>
+<style>
+.container {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.example{
+    padding: 2rem 0;
+}
+
+.row {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.col-cmp {
+    grid-column: span 3 / span 3;
+}
+
+.col-data {
+    grid-column: span 2 / span 2;
+}
+
+pre {
+    background: #f4f5f6;
+    border-left: 0.3rem solid cornflowerblue;
+    padding: 1rem;
+    margin: 0;
+    overflow-y: hidden;
+}
+
+</style>

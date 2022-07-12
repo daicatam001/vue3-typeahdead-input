@@ -85,6 +85,8 @@ Use component in template
 | item-text | string | Set property of items’s text value | text |
 | item-value | string | Set property of items’s value | value |
 | label | string | Label of typeahead input | undefined |
+| placeholder | string | Placeholder of typeahead input | undefined |
+| maxLength | number | max length of typeahead input | undefined |
 | value | any | Value of typeahead input | undefined |
 | emptyMessage| string | Display message when there is no data | No data available |
 
@@ -95,3 +97,8 @@ Use component in template
 | @change | Emitted when the input is changed by user interaction |
 | @update:modelValue | The updated bound model |
 
+## Slot
+
+| Name | Description |
+| ---- | ----------- |
+| option-item | Define a custom option item appearance `v-slot:option-item={item, value}` |

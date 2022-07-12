@@ -43,7 +43,8 @@ const mapItemField = (item, key) => typeof item === 'object' ? item[key] : item
 
 const mappedItems = computed(() => items.value.map(item => ({
     text: mapItemField(item, itemText.value),
-    value: mapItemField(item, itemValue.value)
+    value: mapItemField(item, itemValue.value),
+    item
 })))
 
 const panelItems = computed(() =>
@@ -125,12 +126,13 @@ const reset = () => {
 };
 
 const updateInputText = () => {
-    if (input.value && internalValue.value) {
-        const selectedItem = mappedItems.value.find(
-            (item) => item.value === internalValue.value
-        );
-        input.value.value = selectedItem.text;
+    if (!input.value) {
+        return
     }
+    const selectedItem = mappedItems.value.find(
+        (item) => item.value === internalValue.value
+    );
+    input.value.value = selectedItem ? selectedItem.text : '';
 };
 
 const onJumpItemDown = () => {
@@ -279,7 +281,7 @@ watch(
                     <slot v-if="slots['option-item']"
                         name="option-item"
                         :value="item.value"
-                        :item="item"></slot>
+                        :item="item.item"></slot>
                     <template v-else> {{ item.text }} </template>
                 </div>
             </div>
@@ -325,6 +327,7 @@ watch(
 
     &-input {
         position: absolute;
+        font-size: 1rem;
         bottom: 50%;
         transform: translateY(50%);
         left: 1rem;
@@ -356,6 +359,7 @@ watch(
 
     &-panel-holder {
         position: fixed;
+        z-index: 10;
         padding: 0.5rem 0;
         border-radius: 0.25rem;
         border: 1px solid #e5e7eb;
@@ -365,6 +369,7 @@ watch(
 
     &-panel {
         max-height: 190px;
+        background-color: #ffffff;
         overflow-y: auto;
         overflow-x: hidden;
         position: relative;
@@ -375,7 +380,6 @@ watch(
 
         /* Track */
         &::-webkit-scrollbar-track {
-            @apply bg-white rounded;
             border-radius: 0.25rem;
         }
 
@@ -388,7 +392,7 @@ watch(
 
     &-item {
         padding: 0.25rem 0.75rem;
-
+        font-size: 1rem;
         &:hover {
             background-color: #f3f4f6;
         }
