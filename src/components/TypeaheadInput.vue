@@ -3,6 +3,7 @@ import { onMounted, ref, toRefs, watch, computed, onUpdated, useSlots } from "vu
 const props = defineProps({
     label: String,
     placeholder: String,
+    maxLength: Number,
     value: String | Number | Object,
     modelValue: String | Number | Object,
     items: {
@@ -24,8 +25,8 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(["change"]);
-const { label, placeholder, items, value, modelValue, itemText, itemValue, name, emptyMessage } = toRefs(props);
+const emit = defineEmits(["change", "update:modelValue"]);
+const { label, placeholder, maxLength, items, value, modelValue, itemText, itemValue, name, emptyMessage } = toRefs(props);
 const slots = useSlots()
 
 const input = ref(null);
@@ -251,6 +252,7 @@ watch(
         <input ref="input"
             type="text"
             :placeholder="placeholder"
+            :maxlength="maxLength"
             @blur="onBlur"
             @input="filterItems"
             @keydown.esc.prevent="isPanelActived = false"
@@ -288,78 +290,117 @@ watch(
 </template>
 
 <style lang="scss">
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 .ta-input {
-    @apply h-10 bg-white border border-gray-300 relative rounded;
+    height: 2.5rem;
+    border: 1px solid #d1d5db;
+    position: relative;
+    border-radius: 0.25rem;
 
     &.ta-has-label {
-        @apply h-[3.25rem];
+        height: 3.25rem;
 
-        .ta-input-input{
-            @apply bottom-1 translate-y-0;
+        .ta-input-input {
+            bottom: 0.25rem;
+            transform: translateY(0)
         }
     }
 
     &.ta-is-focused {
-        @apply border-indigo-500;
+        border-color: #6365f1;
 
         .ta-input-label {
-            @apply text-indigo-500;
+            color: #6365f1
         }
     }
 
     &-label {
-        @apply select-none absolute top-1 left-4 text-gray-500 text-sm;
+        user-select: none;
+        position: absolute;
+        top: 0.25rem;
+        left: 1rem;
+        color: #6b7280;
+        font-size: 0.875rem;
+        line-height: 1.25rem
     }
 
     &-input {
-        @apply absolute bottom-1/2 translate-y-1/2 left-4 w-[calc(100%-3rem)] outline-none
+        position: absolute;
+        bottom: 50%;
+        transform: translateY(50%);
+        left: 1rem;
+        width: calc(100% - 3rem);
+        outline: none;
+        padding: 0;
+        border: 0;
     }
 
     &-arrow {
-        @apply absolute top-1/2 right-3 -translate-y-1/2;
-        @apply w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-t-4 border-t-gray-400;
+        position: absolute;
+        top: 50%;
+        right: 0.75rem;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 4px solid #d1d5db;
     }
 
     &-panel-place {
-        @apply absolute left-[-1px] top-[calc(100%+0.5rem)] w-[calc(100%+2px)] -z-10;
+        position: absolute;
+        left: -1px;
+        top: calc(100% + 0.5rem);
+        width: calc(100% + 2px);
+        z-index: -10;
     }
 
     &-panel-holder {
-        @apply fixed py-2 bg-white rounded shadow-lg z-10 border;
+        position: fixed;
+        padding: 0.5rem 0;
+        border-radius: 0.25rem;
+        border: 1px solid #e5e7eb;
+        box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px;
+
     }
 
     &-panel {
-        @apply max-h-[190px] overflow-y-auto overflow-x-hidden relative;
+        max-height: 190px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        position: relative;
 
         &::-webkit-scrollbar {
-            @apply w-1;
+            width: 0.25rem;
         }
 
         /* Track */
         &::-webkit-scrollbar-track {
             @apply bg-white rounded;
+            border-radius: 0.25rem;
         }
 
         /* Handle */
         &::-webkit-scrollbar-thumb {
-            @apply bg-gray-400 rounded;
+            background-color: #d1d5db;
+            border-radius: 0.25rem;
         }
     }
 
     &-item {
-        @apply py-1 hover:bg-gray-100 px-3;
+        padding: 0.25rem 0.75rem;
+
+        &:hover {
+            background-color: #f3f4f6;
+        }
+
     }
 
     &-item-jumped {
-        @apply bg-gray-100
+        background-color: #f3f4f6;
     }
 
     &-empty-message {
-        @apply px-3;
+        padding: 0 0.75rem;
     }
 }
 </style>
