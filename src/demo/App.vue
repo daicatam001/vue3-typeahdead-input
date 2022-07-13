@@ -1,8 +1,12 @@
 <template>
+    <TheHeader />
     <div class="container">
         <BasicExample></BasicExample>
+        <hr>
         <ObjectItemsExample></ObjectItemsExample>
+        <hr>
         <CustomOptionSlotExample></CustomOptionSlotExample>
+        <hr>
         <ObjectItemValueExample></ObjectItemValueExample>
     </div>
 </template>
@@ -11,16 +15,23 @@ import BasicExample from './BasicExample.vue';
 import ObjectItemsExample from './ObjectItemsExample.vue';
 import CustomOptionSlotExample from './CustomOptionSlotExample.vue';
 import ObjectItemValueExample from './ObjectItemValueExample.vue';
+import TheHeader from './TheHeader.vue';
 </script>
 <style>
-.container {
+html,
+body {
+    margin: 0;
     font-family: Avenir, Helvetica, Arial, sans-serif;
+}
+
+.container {
+
     max-width: 1200px;
     margin: 0 auto;
     padding: 30px;
 }
 
-.example{
+.example {
     padding: 2rem 0;
 }
 
@@ -41,8 +52,22 @@ import ObjectItemValueExample from './ObjectItemValueExample.vue';
 pre {
     margin: 0;
 }
-h4{
+
+h4 {
     margin-bottom: 10px;
 }
 
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: aliceblue;
+    padding: 50px 0;
+}
+
+.badges{
+    display: flex;
+    gap: 10px;
+}
 </style>

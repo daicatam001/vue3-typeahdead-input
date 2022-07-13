@@ -12,6 +12,7 @@
                 placeholder=&quot;Choose a country&quot;
                 :items=&quot;items&quot;&gt;
             &lt;/TypeaheadInput&gt;
+        &lt;/div&gt;
     &lt;/template&gt;
     &lt;script setup&gt;
     import { ref } from &#39;vue&#39;;

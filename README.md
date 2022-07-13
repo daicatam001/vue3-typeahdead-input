@@ -6,8 +6,6 @@ A simple Vue 3 type-ahead input component that shows a list of suggested items b
 ## Demo
 
   - [Example page](https://vue3-typeahdead-input.vercel.app/)
-  - [Source code](https://github.com/daicatam001/vue3-typeahdead-input/tree/master/src/demo)
-
 
 
 ## Installation
