@@ -30,7 +30,16 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["change", "update:modelValue"]);
-const { label, placeholder, maxLength, items, value, modelValue, itemText, itemValue, skipItemValue, name, emptyMessage } = toRefs(props);
+const { label,
+    placeholder,
+    maxLength,
+    items,
+    value,
+    modelValue,
+    itemText,
+    itemValue,
+    skipItemValue,
+    emptyMessage } = toRefs(props);
 const slots = useSlots()
 
 const input = ref(null);
