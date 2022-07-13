@@ -33,6 +33,7 @@
     "type": "git",
     "url": "https://github.com/daicatam001/vue3-typeahdead-input.git"
   },
+  "license": "MIT",
   "homepage": "",
   "keywords": [
     "vue",
