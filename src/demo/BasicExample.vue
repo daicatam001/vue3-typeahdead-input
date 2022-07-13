@@ -48,9 +48,10 @@
                 </pre>
             </div>
             <div class="col-data">
-                 <TypeaheadInput v-model="model"
+                <TypeaheadInput v-model="model"
                     label="Country"
                     placeholder="Choose a country"
+                    @focus="onFocus"
                     :items="items"></TypeaheadInput>
                 <h4>Model:</h4>
                 <pre v-highlightjs><code class="javascript">{{ model }}</code></pre>
@@ -102,4 +103,8 @@ const items = [
     "Zimbabwe",
 ];
 const model = ref(null)
+
+const onFocus = (e) => {
+    console.log('on Focus', e)
+}
 </script>

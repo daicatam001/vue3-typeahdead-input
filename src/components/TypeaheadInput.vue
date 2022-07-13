@@ -2,10 +2,10 @@
 import { onMounted, ref, toRefs, watch, computed, onUpdated, useSlots } from "vue";
 const props = defineProps({
     label: String,
-    placeholder: String,
-    maxLength: Number,
     value: String | Number | Object,
     modelValue: String | Number | Object,
+    readonly: Boolean,
+    disabled: Boolean,
     items: {
         type: Array,
         default: () => [],
@@ -22,7 +22,6 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
-    name: String,
     emptyMessage: {
         type: String,
         default: "No data available"
@@ -31,14 +30,14 @@ const props = defineProps({
 
 const emit = defineEmits(["change", "update:modelValue"]);
 const { label,
-    placeholder,
-    maxLength,
     items,
     value,
     modelValue,
     itemText,
     itemValue,
     skipItemValue,
+    readonly,
+    disabled,
     emptyMessage } = toRefs(props);
 const slots = useSlots()
 
@@ -140,6 +139,9 @@ const onBlur = () => {
 };
 
 const onClick = () => {
+    if (disabled.value || readonly.value) {
+        return
+    }
     input.value.focus();
     isFocused.value = true;
     isPanelActived.value = true;
@@ -274,14 +276,14 @@ watch(
 </script>
 <template>
     <div class="ta-input"
-        :class="{ 'ta-is-focused': isFocused, 'ta-has-label': !!label }"
+        :class="{ 'ta-input-focused': isFocused, 'ta-input-readonly': readonly, 'ta-input-disabled': disabled, 'ta-input-has-label': !!label }"
         @mousedown.prevent="onClick">
         <label v-if="label"
             class="ta-input-label">{{ label }}</label>
         <input ref="input"
-            type="text"
-            :placeholder="placeholder"
-            :maxlength="maxLength"
+            v-bind="$attrs"
+            :readonly="readonly"
+            :disabled="disabled"
             @blur="onBlur"
             @input="filterItems"
             @keydown.esc.prevent="isPanelActived = false"
@@ -325,7 +327,7 @@ watch(
     position: relative;
     border-radius: 0.25rem;
 
-    &.ta-has-label {
+    &.ta-input-has-label {
         height: 3.25rem;
 
         .ta-input-input {
@@ -334,11 +336,22 @@ watch(
         }
     }
 
-    &.ta-is-focused {
+    &.ta-input-focused {
         border-color: #6365f1;
 
         .ta-input-label {
             color: #6365f1
+        }
+    }
+
+    &.ta-input-disabled {
+        background-color: #f3f4f6;
+    }
+
+    &.ta-input-disabled,
+    &.ta-input-readonly {
+        input {
+            cursor: default;
         }
     }
 
@@ -362,6 +375,19 @@ watch(
         outline: none;
         padding: 0;
         border: 0;
+        background-color: transparent;
+
+        /* Chrome, Safari, Edge, Opera */
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        &[type=number] {
+            -moz-appearance: textfield;
+        }
     }
 
     &-arrow {
@@ -390,13 +416,13 @@ watch(
         padding: 0.5rem 0;
         border-radius: 0.25rem;
         border: 1px solid #e5e7eb;
+        background-color: #ffffff;
         box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px;
 
     }
 
     &-panel {
         max-height: 190px;
-        background-color: #ffffff;
         overflow-y: auto;
         overflow-x: hidden;
         position: relative;
