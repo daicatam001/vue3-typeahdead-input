@@ -9,6 +9,7 @@
             &lt;TypeaheadInput 
                 v-model=&quot;model&quot;
                 label=&quot;Country&quot;
+                @focus=&quot;onFocus&quot;
                 placeholder=&quot;Choose a country&quot;
                 :items=&quot;items&quot;&gt;
             &lt;/TypeaheadInput&gt;
@@ -43,6 +44,9 @@
         &quot;Zimbabwe&quot;,
     ];
     const model = ref(null)
+    const onFocus = (e) =&gt; {
+        console.log(&#39;on Focus&#39;, e)
+    }
     &lt;/script&gt; 
                 </code>
                 </pre>

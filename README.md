@@ -86,10 +86,15 @@ Use component in template
 | item-value | string | Set property of items’s value. In case `skip-item-value` is `true` the value will be used to set option item key | value |
 | skip-item-value | boolean | Get whole object item as a value |
 | label | string | Label of typeahead input | undefined |
-| placeholder | string | Placeholder of typeahead input | undefined |
-| maxLength | number | max length of typeahead input | undefined |
+| value | any | Value of typeahead input | undefined |
+| readonly | boolean | Set state of input is readonly | undefined |
+| disabled | boolean | Set state of input is disabled, it's similar to readonly props but has different style | undefined |
 | value | any | Value of typeahead input | undefined |
 | emptyMessage| string | Display message when there is no data | No data available |
+
+### Fallthrough attributes
+
+All attributes added to the component not provided above fallthrough the input control. For example, `placeholder`, `maxlength`... or input events `@input`, `@focus`...Check out more details at [the demo](https://vue3-typeahdead-input.vercel.app/)
 
 ## Events
 
