@@ -3,14 +3,56 @@
         <h3>Using a strings array</h3>
         <div class="row">
             <div class="col-cmp">
-                <TypeaheadInput 
-                    v-model="model"
+                <pre v-highlightjs><code class="javascript">
+    &lt;template&gt;
+        &lt;div class=&quot;example&quot;&gt;
+            &lt;TypeaheadInput 
+                v-model=&quot;model&quot;
+                label=&quot;Country&quot;
+                placeholder=&quot;Choose a country&quot;
+                :items=&quot;items&quot;&gt;
+            &lt;/TypeaheadInput&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;
+    import { ref } from &#39;vue&#39;;
+
+    const items = [
+        &quot;Afghanistan&quot;,
+        &quot;Algeria&quot;,
+        &quot;American Samoa&quot;,
+        &quot;Andorra&quot;,
+        &quot;Aruba&quot;,
+        &quot;Ascension Island&quot;,
+        &quot;Australia&quot;,
+        &quot;Barbados&quot;,
+        &quot;Belarus&quot;,
+        &quot;Belgium&quot;,
+        &quot;Belize&quot;,
+        &quot;Comoros&quot;,
+        &quot;Congo - Brazzaville&quot;,
+        &quot;Congo - Kinshasa&quot;,
+        &quot;Slovakia&quot;,
+        &quot;Slovenia&quot;,
+        &quot;Solomon Islands&quot;,
+        &quot;Somalia&quot;,
+        &quot;South Africa&quot;,
+        &quot;Taiwan&quot;,
+        &quot;Tajikistan&quot;,
+        &quot;Zambia&quot;,
+        &quot;Zimbabwe&quot;,
+    ];
+    const model = ref(null)
+    &lt;/script&gt; 
+                </code>
+                </pre>
+            </div>
+            <div class="col-data">
+                 <TypeaheadInput v-model="model"
                     label="Country"
                     placeholder="Choose a country"
                     :items="items"></TypeaheadInput>
-            </div>
-            <div class="col-data">
-                <pre><code>{{ model }}</code></pre>
+                <h4>Model:</h4>
+                <pre v-highlightjs><code class="javascript">{{ model }}</code></pre>
             </div>
         </div>
     </div>
@@ -21,13 +63,6 @@ import { ref } from 'vue';
 const items = [
     "Afghanistan",
     "Algeria",
-    "American Samoa",
-    "Andorra",
-    "Aruba",
-    "Ascension Island",
-    "Australia",
-    "Barbados",
-    "Belarus",
     "Belgium",
     "Belize",
     "Comoros",

@@ -39,11 +39,10 @@ import ObjectItemValueExample from './ObjectItemValueExample.vue';
 }
 
 pre {
-    background: #f4f5f6;
-    border-left: 0.3rem solid cornflowerblue;
-    padding: 1rem;
     margin: 0;
-    overflow-y: hidden;
+}
+h4{
+    margin-bottom: 10px;
 }
 
 </style>
