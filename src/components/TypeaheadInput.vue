@@ -273,6 +273,10 @@ watch(
     },
     { immediate: true }
 );
+
+defineExpose({
+    input
+})
 </script>
 <template>
     <div class="ta-input"
@@ -284,12 +288,12 @@ watch(
             v-bind="$attrs"
             :readonly="readonly"
             :disabled="disabled"
-            @blur="onBlur"
-            @input="filterItems"
-            @keydown.esc.prevent="isPanelActived = false"
+            @blur.stop="onBlur"
+            @input.stop="filterItems"
+            @keydown.esc.prevent.stop="isPanelActived = false"
             @keydown.enter.stop="onSelectItem($event)"
-            @keydown.up.prevent="onJumpItemUp"
-            @keydown.down.prevent="onJumpItemDown"
+            @keydown.up.prevent.stop="onJumpItemUp"
+            @keydown.down.prevent.stop="onJumpItemDown"
             class="ta-input-input" />
         <div class="ta-input-arrow"></div>
         <div class="ta-input-panel-place"

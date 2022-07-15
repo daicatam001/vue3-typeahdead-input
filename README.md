@@ -108,3 +108,9 @@ All attributes added to the component not provided above fallthrough the input c
 | Name | Description |
 | ---- | ----------- |
 | option-item | Define a custom option item appearance `v-slot:option-item={item, value}` |
+
+## Exposed
+
+| Name | Description |
+| ---- | ----------- |
+| input | Input element |

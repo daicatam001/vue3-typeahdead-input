@@ -6,10 +6,12 @@
                 <pre v-highlightjs><code class="javascript">
     &lt;template&gt;
         &lt;div class=&quot;example&quot;&gt;
-            &lt;TypeaheadInput 
+            &lt;TypeaheadInput
+                ref=&quot;taInput&quot; 
                 v-model=&quot;model&quot;
                 label=&quot;Country&quot;
                 @focus=&quot;onFocus&quot;
+                @input=&quot;onInput&quot;
                 placeholder=&quot;Choose a country&quot;
                 :items=&quot;items&quot;&gt;
             &lt;/TypeaheadInput&gt;
@@ -44,8 +46,13 @@
         &quot;Zimbabwe&quot;,
     ];
     const model = ref(null)
+    const taInput = ref(null)
     const onFocus = (e) =&gt; {
         console.log(&#39;on Focus&#39;, e)
+    }
+    const onInput = (e) =&gt; {
+        // expose ref input
+        console.log(taInput.value.input.value)
     }
     &lt;/script&gt; 
                 </code>
@@ -53,9 +60,11 @@
             </div>
             <div class="col-data">
                 <TypeaheadInput v-model="model"
+                    ref="taInput"
                     label="Country"
-                    placeholder="Choose a country"
                     @focus="onFocus"
+                    @input="onInput"
+                    placeholder="Choose a country"
                     :items="items"></TypeaheadInput>
                 <h4>Model:</h4>
                 <pre v-highlightjs><code class="javascript">{{ model }}</code></pre>
@@ -107,8 +116,14 @@ const items = [
     "Zimbabwe",
 ];
 const model = ref(null)
-
+const taInput = ref(null)
 const onFocus = (e) => {
     console.log('on Focus', e)
+
+}
+
+const onInput = (e) => {
+    // expose ref input
+    console.log(taInput.value.input.value)
 }
 </script>
