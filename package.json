@@ -15,7 +15,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "test:unit": "vitest --environment jsdom --watch --coverage",
+    "test:unit": "vitest watch --environment jsdom --coverage",
     "build-lib": "vite --config vite.config.lib.js build",
     "preview": "vite preview --port 4173"
   },
