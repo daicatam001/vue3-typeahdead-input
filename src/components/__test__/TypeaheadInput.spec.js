@@ -1,137 +1,150 @@
-import { mount } from "@vue/test-utils";
-import { describe, it, beforeEach, expect } from "vitest";
+import { shallowMount } from "@vue/test-utils";
+import { afterEach, describe, expect, it } from "vitest";
 import TypeaheadInput from "../TypeaheadInput.vue";
 describe("TypeaheadInput", () => {
-  beforeEach(() => {});
+  let wrapper;
+
+  const createComponent = (options) => {
+    wrapper = shallowMount(TypeaheadInput, options);
+  };
+
+  afterEach(() => {
+    wrapper.unmount();
+  });
+
+  const findInput = () => wrapper.find("input");
+  const findLabel = () => wrapper.find("label");
+  const findPanelHolder = () => wrapper.find('[data-test="panel-holder"]');
+  const findEmptyMsg = () => wrapper.find('[data-test="empty-message"]');
+  const findPanel = () => wrapper.find('[data-test="panel"]');
+  const findPanelItem = () => wrapper.find('[data-test="panel-item"]');
+  const findPanelItems = () => wrapper.findAll('[data-test="panel-item"]');
+  const findJumpedItem = () => wrapper.find(".ta-input-item-jumped");
 
   it("renders properly", () => {
-    const wrapper = mount(TypeaheadInput);
+    createComponent();
     expect(wrapper.classes("ta-input")).toBe(true);
     expect(wrapper.html()).toContain("input");
-    expect(wrapper.find("label").exists()).toBe(false);
-    expect(wrapper.find('[data-test="panel-holder"]').isVisible()).toBe(false);
+    expect(findLabel().exists()).toBe(false);
+    expect(findPanelHolder().isVisible()).toBe(false);
   });
 
   it("renders label when having label props", () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       props: {
         label: "Label",
       },
     });
-    expect(wrapper.find("label").text()).toContain("Label");
+    expect(findLabel().text()).toContain("Label");
   });
 
   it("is on readonly state with readonly props true", () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       props: {
         readonly: true,
       },
     });
-    console.log(wrapper.find("input").attributes());
     expect(wrapper.classes("ta-input-readonly")).toBe(true);
-    expect(wrapper.find("input").html()).toContain("readonly");
+    expect(findInput().html()).toContain("readonly");
   });
 
   it("is on disabled state with disabled props true", () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       props: {
         disabled: true,
       },
     });
     expect(wrapper.classes("ta-input-disabled")).toBe(true);
-    expect(wrapper.find("input").html()).toContain("disabled");
+    expect(findInput().html()).toContain("disabled");
   });
 
   it("renders panel when being clicked", async () => {
-    const wrapper = mount(TypeaheadInput);
+    createComponent();
     await wrapper.trigger("mousedown");
-    expect(wrapper.find('[data-test="panel-holder"]').isVisible()).toBe(true);
+    expect(findPanelHolder().isVisible()).toBe(true);
   });
 
   it("focus input  when being clicked", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       attachTo: document.body,
     });
     await wrapper.trigger("mousedown");
-    expect(wrapper.find("input").element).toBe(document.activeElement);
+    expect(findInput().element).toBe(document.activeElement);
   });
 
   it("hides panel when blur input", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       attachTo: document.body,
     });
     await wrapper.trigger("mousedown");
-    const input = wrapper.find("input");
-    expect(wrapper.find('[data-test="panel-holder"]').isVisible()).toBe(true);
-    expect(input.element).toBe(document.activeElement);
-    await input.trigger("blur");
-    expect(wrapper.find('[data-test="panel-holder"]').isVisible()).toBe(false);
+    expect(findPanelHolder().isVisible()).toBe(true);
+    expect(findInput().element).toBe(document.activeElement);
+    await findInput().trigger("blur");
+    expect(findPanelHolder().isVisible()).toBe(false);
   });
 
   it("hides panel when press esc", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       attachTo: document.body,
     });
     await wrapper.trigger("mousedown");
-    expect(wrapper.find('[data-test="panel-holder"]').isVisible()).toBe(true);
-    const input = wrapper.find("input");
-    expect(input.element).toBe(document.activeElement);
-    await input.trigger("keydown", { key: "Escape" });
-    expect(wrapper.find('[data-test="panel-holder"]').isVisible()).toBe(false);
+    expect(findPanelHolder().isVisible()).toBe(true);
+    expect(findInput().element).toBe(document.activeElement);
+    await findInput().trigger("keydown", { key: "Escape" });
+    expect(findPanelHolder().isVisible()).toBe(false);
   });
 
   it("with readonly props doesn't render panel when being clicked ", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       props: {
         readonly: true,
       },
     });
     await wrapper.trigger("mousedown");
-    expect(wrapper.find('[data-test="panel-holder"]').isVisible()).toBe(false);
+    expect(findPanelHolder().isVisible()).toBe(false);
   });
 
   it("with disabled props doesn't render panel when being clicked ", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       props: {
         disabled: true,
       },
     });
     await wrapper.trigger("mousedown");
-    expect(wrapper.find('[data-test="panel-holder"]').isVisible()).toBe(false);
+    expect(findPanelHolder().isVisible()).toBe(false);
   });
 
   it("renders no data message when having no data", async () => {
-    const wrapper = mount(TypeaheadInput);
+    createComponent();
     await wrapper.trigger("mousedown");
-    expect(wrapper.find('[data-test="panel-holder"]').isVisible()).toBe(true);
-    expect(wrapper.find('[data-test="empty-message"]').exists()).toBe(true);
+    expect(findPanelHolder().isVisible()).toBe(true);
+    expect(findEmptyMsg().exists()).toBe(true);
   });
 
   it("renders panel items when having data", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       props: {
         items: [1, 2, 3],
       },
     });
     await wrapper.trigger("mousedown");
-    expect(wrapper.find('[data-test="panel"]').exists()).toBe(true);
-    expect(wrapper.findAll('[data-test="panel-item"]')).toHaveLength(3);
+    expect(findPanel().exists()).toBe(true);
+    expect(findPanelItems()).toHaveLength(3);
   });
 
   it("renders panel items when having primitive data", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       props: {
         items: [1, 2, 3],
       },
     });
     await wrapper.trigger("mousedown");
-    expect(wrapper.find('[data-test="panel"]').exists()).toBe(true);
-    const panelItem = wrapper.find('[data-test="panel-item"]');
-    expect(panelItem.text()).toBe("1");
+    expect(findPanel().exists()).toBe(true);
+    expect(findPanelItem().text()).toBe("1");
   });
 
   it("renders panel items when having object data", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       props: {
         items: [
           {
@@ -146,13 +159,12 @@ describe("TypeaheadInput", () => {
       },
     });
     await wrapper.trigger("mousedown");
-    expect(wrapper.find('[data-test="panel"]').exists()).toBe(true);
-    const panelItem = wrapper.find('[data-test="panel-item"]');
-    expect(panelItem.text()).toBe("xin chao");
+    expect(findPanel().exists()).toBe(true);
+    expect(findPanelItem().text()).toBe("xin chao");
   });
 
   it("jumb to first item when press down", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       attachTo: document.body,
       props: {
         items: [
@@ -168,14 +180,13 @@ describe("TypeaheadInput", () => {
       },
     });
     await wrapper.trigger("mousedown");
-    const input = wrapper.find("input");
-    expect(input.element).toBe(document.activeElement);
-    await input.trigger("keydown", { key: "ArrowDown" });
-    expect(wrapper.find(".ta-input-item-jumped").text()).toContain("xin chao");
+    expect(findInput().element).toBe(document.activeElement);
+    await findInput().trigger("keydown", { key: "ArrowDown" });
+    expect(findJumpedItem().text()).toContain("xin chao");
   });
 
   it("jumb to last item when press down twice", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       attachTo: document.body,
       props: {
         items: [
@@ -191,16 +202,14 @@ describe("TypeaheadInput", () => {
       },
     });
     await wrapper.trigger("mousedown");
-    const input = wrapper.find("input");
-    expect(input.element).toBe(document.activeElement);
-    await input.trigger("keydown", { key: "ArrowDown" });
-    await input.trigger("keydown", { key: "ArrowDown" });
-    expect(wrapper.find(".ta-input-item-jumped").text()).toContain("tam biet");
+    expect(findInput().element).toBe(document.activeElement);
+    await findInput().trigger("keydown", { key: "ArrowDown" });
+    await findInput().trigger("keydown", { key: "ArrowDown" });
+    expect(findJumpedItem().text()).toContain("tam biet");
   });
-
 
   it("jumb to last item when press up", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       attachTo: document.body,
       props: {
         items: [
@@ -216,15 +225,13 @@ describe("TypeaheadInput", () => {
       },
     });
     await wrapper.trigger("mousedown");
-    const input = wrapper.find("input");
-    expect(input.element).toBe(document.activeElement);
-    await input.trigger("keydown", { key: "ArrowUp" });
-    expect(wrapper.find(".ta-input-item-jumped").text()).toContain("tam biet");
+    expect(findInput().element).toBe(document.activeElement);
+    await findInput().trigger("keydown", { key: "ArrowUp" });
+    expect(findJumpedItem().text()).toContain("tam biet");
   });
 
-
   it("jumb to fist item when press up twice", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       attachTo: document.body,
       props: {
         items: [
@@ -240,28 +247,27 @@ describe("TypeaheadInput", () => {
       },
     });
     await wrapper.trigger("mousedown");
-    const input = wrapper.find("input");
-    expect(input.element).toBe(document.activeElement);
-    await input.trigger("keydown", { key: "ArrowUp" });
-    await input.trigger("keydown", { key: "ArrowUp" });
-    expect(wrapper.find(".ta-input-item-jumped").text()).toContain("xin chao");
+    expect(findInput().element).toBe(document.activeElement);
+    await findInput().trigger("keydown", { key: "ArrowUp" });
+    await findInput().trigger("keydown", { key: "ArrowUp" });
+    expect(findJumpedItem().text()).toContain("xin chao");
   });
 
   it("update input when lick primitive panel item", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       props: {
         items: [1, 2, 3],
       },
     });
     await wrapper.trigger("mousedown");
-    expect(wrapper.find('[data-test="panel"]').exists()).toBe(true);
-    const panelItem = wrapper.find('[data-test="panel-item"]');
+    expect(findPanel().exists()).toBe(true);
+    const panelItem = findPanelItem();
     await panelItem.trigger("mousedown");
     expect(wrapper.find("input").element.value).toBe("1");
   });
 
   it("update input when click object panel item", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       props: {
         items: [
           {
@@ -276,35 +282,34 @@ describe("TypeaheadInput", () => {
       },
     });
     await wrapper.trigger("mousedown");
-    expect(wrapper.find('[data-test="panel"]').exists()).toBe(true);
-    const panelItem = wrapper.find('[data-test="panel-item"]');
-    await panelItem.trigger("mousedown");
-    expect(wrapper.find("input").element.value).toBe("xin chao");
+    expect(findPanel().exists()).toBe(true);
+    await findPanelItem().trigger("mousedown");
+    expect(findInput().element.value).toBe("xin chao");
   });
 
   it("filter primitive panel inputs item when type input", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       props: {
         items: [1, 2, 3],
       },
     });
     await wrapper.trigger("mousedown");
-    expect(wrapper.find('[data-test="panel"]').exists()).toBe(true);
-    expect(wrapper.findAll('[data-test="panel-item"]')).toHaveLength(3);
-    await wrapper.find("input").setValue("1");
-    expect(wrapper.findAll('[data-test="panel-item"]')).toHaveLength(1);
+    expect(findPanel().exists()).toBe(true);
+    expect(findPanelItems()).toHaveLength(3);
+    await findInput().setValue("1");
+    expect(findPanelItems()).toHaveLength(1);
   });
 
   it("filter primitive panel inputs - show empty message when no item match", async () => {
-    const wrapper = mount(TypeaheadInput, {
+    createComponent({
       props: {
         items: [1, 2, 3],
       },
     });
     await wrapper.trigger("mousedown");
-    expect(wrapper.find('[data-test="panel"]').exists()).toBe(true);
-    expect(wrapper.findAll('[data-test="panel-item"]')).toHaveLength(3);
-    await wrapper.find("input").setValue("4");
-    expect(wrapper.find('[data-test="empty-message"]').exists()).toBe(true);
+    expect(findPanel().exists()).toBe(true);
+    expect(findPanelItems()).toHaveLength(3);
+    await findInput().setValue("4");
+    expect(findEmptyMsg().exists()).toBe(true);
   });
 });
