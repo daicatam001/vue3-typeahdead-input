@@ -76,7 +76,7 @@ describe("TypeaheadInput", () => {
     expect(wrapper.find('[data-test="panel-holder"]').isVisible()).toBe(true);
     const input = wrapper.find("input");
     expect(input.element).toBe(document.activeElement);
-    await input.trigger("keydown", { key: 27 });
+    await input.trigger("keydown", { key: "Escape" });
     expect(wrapper.find('[data-test="panel-holder"]').isVisible()).toBe(false);
   });
 
@@ -170,7 +170,80 @@ describe("TypeaheadInput", () => {
     await wrapper.trigger("mousedown");
     const input = wrapper.find("input");
     expect(input.element).toBe(document.activeElement);
-    await input.trigger("keydown", { keyCode: 40 });
+    await input.trigger("keydown", { key: "ArrowDown" });
+    expect(wrapper.find(".ta-input-item-jumped").text()).toContain("xin chao");
+  });
+
+  it("jumb to last item when press down twice", async () => {
+    const wrapper = mount(TypeaheadInput, {
+      attachTo: document.body,
+      props: {
+        items: [
+          {
+            text: "xin chao",
+            value: "xin-chao",
+          },
+          {
+            text: "tam biet",
+            value: "tam-biet",
+          },
+        ],
+      },
+    });
+    await wrapper.trigger("mousedown");
+    const input = wrapper.find("input");
+    expect(input.element).toBe(document.activeElement);
+    await input.trigger("keydown", { key: "ArrowDown" });
+    await input.trigger("keydown", { key: "ArrowDown" });
+    expect(wrapper.find(".ta-input-item-jumped").text()).toContain("tam biet");
+  });
+
+
+  it("jumb to last item when press up", async () => {
+    const wrapper = mount(TypeaheadInput, {
+      attachTo: document.body,
+      props: {
+        items: [
+          {
+            text: "xin chao",
+            value: "xin-chao",
+          },
+          {
+            text: "tam biet",
+            value: "tam-biet",
+          },
+        ],
+      },
+    });
+    await wrapper.trigger("mousedown");
+    const input = wrapper.find("input");
+    expect(input.element).toBe(document.activeElement);
+    await input.trigger("keydown", { key: "ArrowUp" });
+    expect(wrapper.find(".ta-input-item-jumped").text()).toContain("tam biet");
+  });
+
+
+  it("jumb to fist item when press up twice", async () => {
+    const wrapper = mount(TypeaheadInput, {
+      attachTo: document.body,
+      props: {
+        items: [
+          {
+            text: "xin chao",
+            value: "xin-chao",
+          },
+          {
+            text: "tam biet",
+            value: "tam-biet",
+          },
+        ],
+      },
+    });
+    await wrapper.trigger("mousedown");
+    const input = wrapper.find("input");
+    expect(input.element).toBe(document.activeElement);
+    await input.trigger("keydown", { key: "ArrowUp" });
+    await input.trigger("keydown", { key: "ArrowUp" });
     expect(wrapper.find(".ta-input-item-jumped").text()).toContain("xin chao");
   });
 
