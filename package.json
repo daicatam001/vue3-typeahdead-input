@@ -1,6 +1,6 @@
 {
   "name": "vue3-typeahead-input",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "files": [
     "dist"
   ],
@@ -15,7 +15,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "test:unit": "vitest --environment jsdom --watch --coverage",
+    "test:unit": "vitest watch --environment jsdom --coverage",
     "build-lib": "vite --config vite.config.lib.js build",
     "preview": "vite preview --port 4173"
   },

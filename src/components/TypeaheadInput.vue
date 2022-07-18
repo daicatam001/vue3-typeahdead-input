@@ -38,7 +38,9 @@ const { label,
     skipItemValue,
     readonly,
     disabled,
-    emptyMessage } = toRefs(props);
+    emptyMessage 
+    
+    } = toRefs(props);
 const slots = useSlots()
 
 const input = ref(null);
@@ -64,7 +66,7 @@ const mappedItems = computed(() => items.value.map(item => ({
 const panelItems = computed(() =>
     query.value
         ? mappedItems.value.filter((item) =>
-            item.text.toLowerCase().includes(query.value.toLowerCase())
+            item.text.toString().toLowerCase().includes(query.value.toLowerCase())
         )
         : mappedItems.value
 );
@@ -298,7 +300,7 @@ defineExpose({
             :disabled="disabled"
             @blur.stop="onBlur"
             @input.stop="filterItems"
-            @keydown.esc.prevent.stop="isPanelActived = false"
+            @keydown.esc.prevent.stop="onBlur"
             @keydown.enter.stop="onSelectItem($event)"
             @keydown.up.prevent.stop="onJumpItemUp"
             @keydown.down.prevent.stop="onJumpItemDown"
@@ -307,15 +309,18 @@ defineExpose({
         <div class="ta-input-panel-place"
             ref="panelPlace"></div>
         <div ref="panelHolder"
+            data-test="panel-holder"
             v-show="isPanelActived"
             class="ta-input-panel-holder">
             <div ref="panel"
+                data-test="panel"
                 v-if="panelItems.length"
                 class="ta-input-panel">
                 <div role="button"
                     v-for="(item, index) of panelItems"
                     :key="item.value"
                     class="ta-input-item"
+                    data-test="panel-item"
                     :ref="(el) => (optionItems[index] = el)"
                     @mousedown.stop="onSelectItem($event, item.value)"
                     :class="{ 'ta-input-item-jumped': jumpedItem == item.value }">
@@ -327,6 +332,7 @@ defineExpose({
                 </div>
             </div>
             <div v-else
+                data-test="empty-message"
                 class="ta-input-empty-message">{{ emptyMessage }}</div>
         </div>
     </div>
