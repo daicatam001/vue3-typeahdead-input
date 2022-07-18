@@ -249,6 +249,14 @@ watch(
     { immediate: true }
 );
 
+watch(isPanelActived, isPanelActived => {
+    if (isPanelActived) {
+        window.addEventListener('scroll', calPanelPosition)
+    } else {
+        window.removeEventListener('scroll', calPanelPosition)
+    }
+})
+
 watch(internalValue, () => {
     updateInputText();
 });
