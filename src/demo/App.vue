@@ -7,7 +7,10 @@
         <hr>
         <CustomOptionSlotExample></CustomOptionSlotExample>
         <hr>
+        <HighlightOptionExample></HighlightOptionExample>
+        <hr>
         <ObjectItemValueExample></ObjectItemValueExample>
+         
     </div>
 </template>
 <script setup>
@@ -15,6 +18,7 @@ import BasicExample from './BasicExample.vue';
 import ObjectItemsExample from './ObjectItemsExample.vue';
 import CustomOptionSlotExample from './CustomOptionSlotExample.vue';
 import ObjectItemValueExample from './ObjectItemValueExample.vue';
+import HighlightOptionExample from './HighlightOptionExample.vue';
 import TheHeader from './TheHeader.vue';
 </script>
 <style>
