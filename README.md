@@ -26,7 +26,7 @@ Import vue3-typeahead-input component globally. You can import default CSS of th
 ```ts
 import App from './App.vue';
 import TypeaheadInput from 'vue3-typeahead-input';
-import 'vue-typeahead-input/dist/style.css'; //Optional default CSS
+import 'vue3-typeahead-input/dist/style.css'; //Optional default CSS
 
 let app = createApp(App)
 app.component('TypeaheadInput', TypeaheadInput)
@@ -37,7 +37,7 @@ app.mount('#app')
 
 ```ts
 import TypeaheadInput from 'vue3-typeahead-input'
-import 'vue-typeahead-input/dist/style.css'; //Optional default CSS
+import 'vue3-typeahead-input/dist/style.css'; //Optional default CSS
 
 export default {
     name: 'YourComponentName',
@@ -58,6 +58,8 @@ Use component in template
 </template>
 
 <script setup>
+    import { ref } from 'vue';
+    
     const items = [
         {
             text:'Item 1',
