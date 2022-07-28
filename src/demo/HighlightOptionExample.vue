@@ -47,6 +47,8 @@
         { id: &quot;OXKwRMVJDR&quot;, name: &quot;land Islands&quot;, iso2: &quot;AX&quot; },
     ];
     const model = ref(null);
+    const taInput = ref(null);
+    
     const highlightOption = (option) =&gt; {
         const query = taInput.value ?  taInput.value.input.value : &#39;&#39;
         const regex = new RegExp(&#39;(&#39; + query + &#39;)&#39;, &#39;gi&#39;);
